@@ -1,0 +1,221 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package empresa2;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.time.LocalDate;
+
+/**
+ *
+ * @author pablo
+ */
+public class Empresa2 {
+
+    public static ArrayList<Empleado> lista_empleados;
+    public static ArrayList lista_lenguajes = new ArrayList();
+    public static ArrayList lista_idiomas = new ArrayList();
+    public static int n;
+//    Al declarar como variable global el ArrayList lista_empleados no haría falta meterlo de parámetro en los demás métodos que la usen
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws ParseException {
+        lista_empleados = new ArrayList<>();
+
+        do {
+            switch (mostrarMenu()) {
+                case 1:
+                    ingresarEmpleado();
+                    break;
+                case 2:
+                    //ordenarEmpleados();
+                    listarEmpleados();
+                    break;
+                case 3:
+                    break;
+            }
+
+        } while (mostrarMenu() != 3);   //TODO: Mejorar UX
+    }
+
+    public static void ingresarEmpleado() throws ParseException {
+
+        Scanner entrada = new Scanner(System.in);
+        //Reseteamos las variables
+        String nombre, apellido1, apellido2, sexo;
+        String fecha, titulacion;
+        int edad;
+
+        System.out.println("Introduzca su nombre: ");
+        nombre = entrada.nextLine();
+
+        System.out.println("Introduzca su primer apellido: ");
+        apellido1 = entrada.nextLine();
+
+        System.out.println("Introduzca su segundo apellido: ");
+        apellido2 = entrada.nextLine();
+
+        System.out.println("Introduzca su edad");
+        edad = entrada.nextInt();
+
+        System.out.println("Introduzca su sexo: ");
+        sexo = entrada.nextLine();
+
+        System.out.println("Introduzca la fecha en la que empezó a trabajar: ");
+        fecha = entrada.nextLine();
+        LocalDate fecha_inicio = LocalDate.parse(fecha);        //fecha_inicio = LocalDate.parse(entrada.nextLine());
+
+        System.out.println("Introduzca su titulación (Inserte C para Comercial o P para programador): ");
+        titulacion = entrada.nextLine();
+
+        Empleado persona = null;
+        switch (titulacion) {
+            case "C": //TODO: Hacerlo case-insensitive
+                persona = insertarComercial(nombre, apellido1, apellido2, edad, sexo, titulacion, fecha_inicio);
+                break;
+            case "P":
+                persona = insertarProgramador(nombre, apellido1, apellido2, edad, sexo, titulacion, fecha_inicio);
+                break;
+            default:
+                System.out.println("Opción no válida, seleccione C o P");
+                break;
+        }
+        lista_empleados.add(persona);
+    }
+
+    public static int mostrarMenu() {
+        int resp;
+
+        Scanner entrada = new Scanner(System.in);
+        System.out.println("BIENVENIDO AL MENU\n"
+                + "#############################################\n"
+                + "A continuación tiene tres opciones:\n"
+                + "1 - Ingresar un empleado\n"
+                + "2 - Listar empleados\n"
+                + "3 - Salir \n"
+                + "Ingrese una opción: ");
+        resp = entrada.nextInt();
+        return resp;
+    }
+
+    public static void listarEmpleados() {
+        //Ahora vamos a emplear un iterador para mostrar los empleados ya ordenados
+        Iterator<Empleado> recorredor = lista_empleados.iterator();
+        while (recorredor.hasNext()) {
+            Empleado elemento_empleado = recorredor.next();
+            System.out.println("#######################################"
+                    + "Nombre: " + elemento_empleado.getNombre() + "\n"
+                    + "Primer apellido: " + elemento_empleado.getApellido1() + "\n"
+                    + "Segundo apellido: " + elemento_empleado.getApellido2() + "\n"
+                    + "Edad: " + elemento_empleado.getEdad() + "\n"
+                    + "Sexo: " + elemento_empleado.getSexo() + "\n"
+                    + "Titulacion: "+elemento_empleado.getTitulacion()+ "\n");
+            
+            String empl_titu = elemento_empleado.getTitulacion();
+
+            //Tengo un problema y es que me salen siempre las mismas posiciones de ArrayList al imprimir
+            if (empl_titu.equals("P")) {
+                n = 0;
+                Programador p1 = (Programador) elemento_empleado;
+                lista_lenguajes = p1.getLista_lenguajes();
+                System.out.println("A continuación se muestran los lenguajes de programación aprendidos por el usuario: ");
+                Iterator<String> idiomero = lista_lenguajes.iterator();
+                while (idiomero.hasNext()) {
+                    String prog_idioma = idiomero.next();
+                    System.out.println(lista_lenguajes.get(n));
+                    n++;
+
+                }
+            }
+            if (empl_titu.equals("C")) {
+                n = 0;
+                Comercial c1 = (Comercial) elemento_empleado;
+                lista_idiomas = c1.getLista_idiomas();
+                System.out.println("A continuación se muestran los idiomas aprendidos por el usuario: ");
+                Iterator<String> idiomero = lista_idiomas.iterator();
+                while (idiomero.hasNext()) {
+                    String prog_idioma = idiomero.next();
+                    System.out.println(lista_idiomas.get(n));
+                    n++;
+                }
+            }
+        }
+    }
+
+    public static Comercial insertarComercial(String nombre, String apellido1, String apellido2, int edad, String sexo, String titulacion, LocalDate fecha_inicio) {
+        String idioma;
+
+        Scanner entrada = new Scanner(System.in);
+        lista_idiomas = new ArrayList();
+
+        do {
+            System.out.println("Introduzca sus idiomas (presione 0 para salir): ");
+            idioma = entrada.nextLine();
+            if (idioma.equals("0")) {
+
+            } else {
+                lista_idiomas.add(idioma);
+            }
+
+        } while (!"0".equals(idioma));
+
+        Comercial persona = new Comercial(nombre, apellido1, apellido2, edad, sexo, titulacion, fecha_inicio, lista_idiomas);
+
+        return persona;
+    }
+
+    public static Programador insertarProgramador(String nombre, String apellido1, String apellido2, int edad, String sexo, String titulacion, LocalDate fecha_inicio) {
+
+        String idioma;
+        Scanner entrada = new Scanner(System.in);
+        lista_lenguajes = new ArrayList();
+
+        do {
+            System.out.println("Introduzca sus lenguajes (presione 0 para salir): ");
+            idioma = entrada.nextLine();
+            if (idioma.equals("0")) {
+
+            } else {
+                lista_lenguajes.add(idioma);
+            }
+
+        } while (!"0".equals(idioma));
+
+        Programador persona = new Programador(nombre, apellido1, apellido2, edad, sexo, titulacion, fecha_inicio, lista_lenguajes);
+        return persona;
+    }
+
+//
+    public static void ordenarEmpleados() {
+        Collections.sort(lista_empleados, new Comparator() {
+            @Override
+            public int compare(Empleado p1, Empleado p2){
+                if (!p1.getApellido1().equals(p2.getApellido1())){  //Si los primeros apellidos no son iguales
+                    return p1.getApellido2().compareTo(p2.getApellido2());
+                }
+                else {
+                   return p1.getApellido1().compareTo(p2.getApellido1()); 
+                }
+                
+            }
+        }); 
+        
+        for (Empleado pos: lista_empleados){
+            listarEmpleados();
+        }
+    
+    
+    }
+    }
+
+    
