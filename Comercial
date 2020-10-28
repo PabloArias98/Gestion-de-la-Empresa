@@ -1,0 +1,28 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package empresa2;
+import java.util.ArrayList;
+import java.time.LocalDate;
+/**
+ *
+ * @author pablo
+ */
+public class Comercial extends Empleado {
+    public ArrayList lista_idiomas = new ArrayList();
+    
+    public Comercial (String nombre, String apellido1, String apellido2, int edad, String sexo, String titulacion, LocalDate fecha_inicio, ArrayList lista_idiomas) {
+        super(nombre, apellido1, apellido2, edad, sexo, titulacion, fecha_inicio);
+        this.lista_idiomas = lista_idiomas;
+    }
+
+    public ArrayList getLista_idiomas() {
+        return lista_idiomas;
+    }
+
+    public void setLista_idiomas(ArrayList lista_idiomas) {
+        this.lista_idiomas = lista_idiomas;
+    }
+}
