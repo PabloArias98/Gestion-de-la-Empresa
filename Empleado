@@ -1,0 +1,98 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package empresa2;
+
+import java.time.LocalDate;
+/**
+ *
+ * @author pablo
+ */
+public class Empleado {
+    private String nombre;
+    private String apellido1;
+    private String apellido2;
+    private int edad;
+    private String sexo;
+    private String titulacion;
+    private LocalDate fecha_inicio;
+
+    public LocalDate getFecha_inicio() {
+        return fecha_inicio;
+    }
+
+    public void setFecha_inicio(LocalDate fecha_inicio) {
+        this.fecha_inicio = fecha_inicio;
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public void setNombre (String nombre) {
+        this.nombre = nombre;
+    }
+    
+    public String getApellido1 () {
+        return apellido1;
+    }
+    
+    public void setApellido1 (String apellido1) {
+        this.apellido1 = apellido1;
+    }
+    
+    public String getApellido2 () {
+        return apellido2;
+    }
+    
+    public void setApellido2 (String apellido2){
+        this.apellido2 = apellido2;
+    }
+    
+    public int getEdad() {
+        return edad;
+    }
+    
+    public void setEdad(int edad){
+        this.edad = edad;
+    }
+    
+    public String getSexo(){
+        return sexo;
+    }
+    
+    public void setSexo(String sexo){
+        this.sexo = sexo;
+    }
+    
+    public String getTitulacion() {
+        return titulacion;
+    }
+    
+    public void setTitulacion(String titulacion) {
+        this.titulacion = titulacion;
+    }
+    
+    public Empleado (String nombre, String apellido1, String apellido2, int edad, String sexo, String titulacion, LocalDate fecha_inicio) {
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.titulacion = titulacion;
+        this.fecha_inicio = fecha_inicio;
+    }
+    
+    public String toString() {
+        return "###################################\n"
+                + "DATOS DEL EMPLEADO: \n"
+                + "Nombre: "+this.nombre+"\n"
+                + "Apellidos: "+this.apellido1+" "+this.apellido2+" \n"
+                + "Edad: "+this.edad+" \n"
+                + "Sexo: "+this.sexo+" \n"
+                + "Fecha en la que comenzó a trabajar: "+this.fecha_inicio+" \n"
+                + "Titulación: "+this.titulacion;
+    }
+}
